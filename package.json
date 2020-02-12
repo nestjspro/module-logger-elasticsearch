@@ -1,0 +1,39 @@
+{
+    "name": "@nestjs.pro/logger-elasticsearch",
+    "description": "NestJS logging module for elasticsearch.",
+    "keywords": [
+        "nestjs",
+        "nest.js",
+        "elasticsearch",
+        "logging",
+        "logger"
+    ],
+    "maintainers": [
+        {
+            "name": "Matthew Davis",
+            "email": "matthew@matthewdavis.io",
+            "url": "https://matthewdavis.io"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/nestjspro/module-logger-elasticsearch"
+    },
+    "version": "0.0.9",
+    "main": "dist/main.js",
+    "types": "dist/ElasticsearchLoggerModule.js",
+    "license": "MIT",
+    "preversion": "rm -rf dist && tsc",
+    "postversion": "npm publish",
+    "scripts": {
+        "start:dev": "concurrently --handle-input \"wait-on dist/main.js && nodemon\" \"tsc -w -p tsconfig.json\" "
+    },
+    "dependencies": {
+        "@elastic/elasticsearch": "^7.5.1",
+        "@nestjs.pro/common": "^1.0.6"
+    },
+    "devDependencies": {
+        "concurrently": "^5.1.0",
+        "wait-on": "^4.0.0"
+    }
+}

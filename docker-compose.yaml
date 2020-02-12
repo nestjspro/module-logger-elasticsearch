@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+
+  #
+  #  Elasticsearch
+  #
+  elasticsearch:
+    image:          docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+    container_name: "odin-elasticsearch"
+    hostname:       "elasticsearch"
+    restart:        always
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      node.name:                    "elasticsearch"
+      ES_JAVA_OPTS:                 "-Xmx256m -Xms256m"
+      discovery-type:               "single-node"
+      cluster.initial_master_nodes: "elasticsearch"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+    networks:
+      - elasticsearch
+
+  #
+  #  Kibana (Elasticsearch Dashboard)
+  #
+  kibana:
+    image:          docker.elastic.co/kibana/kibana:7.5.2
+    container_name: "kibana"
+    hostname:       "kibana"
+    restart:        always
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - elasticsearch
+
+volumes:
+  elasticsearch:
+
+networks:
+  elasticsearch:
