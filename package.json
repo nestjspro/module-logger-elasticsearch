@@ -25,9 +25,6 @@
     "license": "MIT",
     "preversion": "rm -rf dist && tsc",
     "postversion": "npm publish",
-    "scripts": {
-        "start:dev": "concurrently --handle-input \"wait-on dist/main.js && nodemon\" \"tsc -w -p tsconfig.json\" "
-    },
     "dependencies": {
         "@elastic/elasticsearch": "^7.5.1",
         "@nestjs.pro/common": "^1.0.6"

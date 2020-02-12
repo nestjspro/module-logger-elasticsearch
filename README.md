@@ -45,6 +45,8 @@ export class AppModule {
 }
 ```
 
+For more configuration options see https://github.com/nestjspro/module-logger-elasticsearch/blob/master/src/ElasticsearchLoggerOptions.ts.
+
 ## Usage
 
 ## Method Logging
