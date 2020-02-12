@@ -20,8 +20,6 @@ export class ElasticsearchLoggerModule {
 
     public static forRoot(options: ElasticsearchLoggerOptions): DynamicModule {
 
-        console.log(options);
-
         return {
 
             module: ElasticsearchLoggerModule,
