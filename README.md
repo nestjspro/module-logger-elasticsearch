@@ -14,6 +14,11 @@ yarn add @nestjs.pro/logger-elasticsearch
 
 ## Setup
 
+### Elasticsearch
+
+First we need an elasticsearch instance (and optionally kibana for viewing logs).This repo comes with a `docker-compose.yaml` file to make things
+easy for development. Simply `docker-compose up -d`.
+
 ### Bootstrapping
 
 Import the `ElasticsearchLoggerModule` in your `AppModule` passing it a few configuration options:
@@ -40,18 +45,19 @@ export class AppModule {
 }
 ```
 
-### Elasticsearch
+## Usage
 
-First we need an elasticsearch instance (and optionally kibana for viewing logs).This repo comes with a `docker-compose.yaml` file to make things
-easy for development. Simply `docker-compose up -d`.
+## Method Logging
+
+Before we can log messages you simply need to inject the `ElasticsearchLoggerService` wherever you need to log messages at.
+
+Example:
 
 ```typescript
 @Injectable()
 export class MyServiceOrController {
 
     public constructor(private readonly elasticsearchLoggerService: ElasticsearchLoggerService) {
-
-        this.organizationRepository = organizationRepository;
 
     }
 
@@ -62,15 +68,13 @@ export class MyServiceOrController {
 
     }
 
-    // ...
+}
 ```
-## Method Logging
-
-Before we can log messages you simply need to inject the `ElasticsearchLoggerService` wherever you need to log messages at.
 
 ## Controller Request Logging
 
-Use at the controller level:
+You can optionally configure an interceptor and use the `ElasticsearchRequestInterceptor` to automagically log all of 
+your http requests. You can declare this at the global/app level or use at the controller level:
 
 ```typescript
 
