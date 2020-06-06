@@ -21,7 +21,7 @@ export class ElasticsearchLoggerService {
      * @param {string} level
      * @param message
      */
-    private log(level: string, message: string): void {
+    private log(level: string, message: any): void {
 
         this.client.index({
 
@@ -44,31 +44,31 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public info(message: string): void {
+    public info(message: any): void {
 
         this.log('info', message);
 
     }
 
-    public error(message: string): void {
+    public error(message: any): void {
 
         this.log('info', message);
 
     }
 
-    public debug(message: string): void {
+    public debug(message: any): void {
 
         this.log('info', message);
 
     }
 
-    public warning(message: string): void {
+    public warning(message: any): void {
 
         this.log('info', message);
 
     }
 
-    public trace(message: string): void {
+    public trace(message: any): void {
 
         this.log('info', message);
 
