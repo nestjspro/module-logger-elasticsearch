@@ -9,8 +9,6 @@ export class ElasticsearchLoggerService {
 
     public constructor(@Inject('CONFIG_OPTIONS') private readonly options: ElasticsearchLoggerOptions) {
 
-        console.log(options);
-
         this.client = new Client(options.elasticsearchClientOptions);
 
     }
@@ -52,25 +50,25 @@ export class ElasticsearchLoggerService {
 
     public error(message: any): void {
 
-        this.log('info', message);
+        this.log('error', message);
 
     }
 
     public debug(message: any): void {
 
-        this.log('info', message);
+        this.log('debug', message);
 
     }
 
     public warning(message: any): void {
 
-        this.log('info', message);
+        this.log('warning', message);
 
     }
 
     public trace(message: any): void {
 
-        this.log('info', message);
+        this.log('trace', message);
 
     }
 
