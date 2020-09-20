@@ -1,6 +1,7 @@
 import { Client }                     from '@elastic/elasticsearch';
 import { Inject }                     from '@nestjs/common';
 import { ElasticsearchLoggerOptions } from './ElasticsearchLoggerOptions';
+import * as os from 'os';
 
 export class ElasticsearchLoggerService {
 
@@ -27,6 +28,7 @@ export class ElasticsearchLoggerService {
             body: {
 
                 date: new Date(),
+                hostname: os.hostname(),
                 level,
                 log: message
 
