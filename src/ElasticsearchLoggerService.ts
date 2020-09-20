@@ -19,7 +19,7 @@ export class ElasticsearchLoggerService {
      * @param {string} level
      * @param message
      */
-    private log(level: string, message: any, indice?: string): void {
+    public log(level: string, message: any, indice?: string): void {
 
         this.client.index({
 
@@ -43,7 +43,7 @@ export class ElasticsearchLoggerService {
 
     }
 
-    private raw(level: string, message: any, indice?: string): void {
+    public raw(level: string, message: any, indice?: string): void {
 
         this.client.index({
 
@@ -87,6 +87,17 @@ export class ElasticsearchLoggerService {
     public trace(message: any, indice?: string): void {
 
         this.log('trace', message, indice);
+
+    }
+
+    public search() {
+
+        this.client.search({
+
+            index: 'mlfabric-logs-*',
+            body: {}
+
+        });
 
     }
 
