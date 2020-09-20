@@ -20,17 +20,17 @@ export class ElasticsearchLoggerService {
      * @param {string} level
      * @param message
      */
-    private log(level: string, message: any): void {
+    private log(level: string, message: any, indice?: string): void {
 
         this.client.index({
 
-            index: this.options.index,
+            index: indice? indice:this.options.index,
             body: {
 
                 date: new Date(),
                 hostname: os.hostname(),
                 level,
-                log: message
+                body: message
 
             }
 
@@ -44,33 +44,33 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public info(message: any): void {
+    public info(message: any, indice?: string): void {
 
-        this.log('info', message);
-
-    }
-
-    public error(message: any): void {
-
-        this.log('error', message);
+        this.log('info', message, indice);
 
     }
 
-    public debug(message: any): void {
+    public error(message: any, indice?: string): void {
 
-        this.log('debug', message);
-
-    }
-
-    public warning(message: any): void {
-
-        this.log('warning', message);
+        this.log('error', message, indice);
 
     }
 
-    public trace(message: any): void {
+    public debug(message: any, indice?: string): void {
 
-        this.log('trace', message);
+        this.log('debug', message, indice);
+
+    }
+
+    public warning(message: any, indice?: string): void {
+
+        this.log('warning', message, indice);
+
+    }
+
+    public trace(message: any, indice?: string): void {
+
+        this.log('trace', message, indice);
 
     }
 
