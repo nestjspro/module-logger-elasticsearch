@@ -6,7 +6,6 @@ import * as os from 'os';
 export class ElasticsearchLoggerService {
 
     private readonly client: Client;
-    private readonly prefix: string;
 
     public constructor(@Inject('CONFIG_OPTIONS') private readonly options: ElasticsearchLoggerOptions) {
 
@@ -33,6 +32,23 @@ export class ElasticsearchLoggerService {
                 body: message
 
             }
+
+        });
+
+        if (this.options.stdout) {
+
+            console.log(`[${ this.options.name }] ${ JSON.stringify(message) }`);
+
+        }
+
+    }
+
+    private raw(level: string, message: any, indice?: string): void {
+
+        this.client.index({
+
+            index: indice? indice:this.options.index,
+            body: message
 
         });
 
