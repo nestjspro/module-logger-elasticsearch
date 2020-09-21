@@ -43,7 +43,7 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public raw(level: string, message: any, indice?: string): void {
+    public raw(message: any, indice?: string): void {
 
         this.client.index({
 
