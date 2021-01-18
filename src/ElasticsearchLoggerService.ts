@@ -94,7 +94,7 @@ export class ElasticsearchLoggerService {
 
         this.client.search({
 
-            index: 'mlfabric-logs-*',
+            index: 'logs-*',
             body: {}
 
         });
