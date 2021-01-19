@@ -1,8 +1,8 @@
-import { Client }                     from '@elastic/elasticsearch';
-import { Inject }                     from '@nestjs/common';
+import { Client } from '@elastic/elasticsearch';
+import { Inject, Injectable } from '@nestjs/common';
 import { ElasticsearchLoggerOptions } from './ElasticsearchLoggerOptions';
 import * as os from 'os';
-
+@Injectable()
 export class ElasticsearchLoggerService {
 
     private readonly client: Client;

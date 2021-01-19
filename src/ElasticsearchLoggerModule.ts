@@ -1,7 +1,7 @@
-import { DynamicModule, Module }      from '@nestjs/common';
+import { DynamicModule, Global, Module } from '@nestjs/common';
 import { ElasticsearchLoggerOptions } from './ElasticsearchLoggerOptions';
 import { ElasticsearchLoggerService } from './ElasticsearchLoggerService';
-
+@Global()
 @Module({
 
     providers: [
