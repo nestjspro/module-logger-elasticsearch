@@ -30,7 +30,7 @@ export class ElasticsearchLoggerService {
      */
     public log(level: string, message: any, indice?: string): void {
 
-        await this.createIndex(indice);
+        this.createIndex(indice);
 
         this.client.index({
 
