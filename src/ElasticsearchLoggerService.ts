@@ -42,7 +42,7 @@ export class ElasticsearchLoggerService {
      */
     public log(level: string, message: any, indice?: string): void {
 
-        this.createIndex(indice);
+        this.createIndexIfNotExists(indice);
 
         return;
         this.client.index({
