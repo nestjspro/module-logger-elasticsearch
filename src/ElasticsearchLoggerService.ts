@@ -14,6 +14,14 @@ export class ElasticsearchLoggerService {
 
     }
 
+    private async createIndex(name: string) {
+
+        const result = await this.client.indices.exists({ index: name });
+
+        console.log(result);
+
+    }
+
     /**
      * Primary log message handler.
      *
@@ -21,6 +29,8 @@ export class ElasticsearchLoggerService {
      * @param message
      */
     public log(level: string, message: any, indice?: string): void {
+
+        await this.createIndex(indice);
 
         this.client.index({
 
