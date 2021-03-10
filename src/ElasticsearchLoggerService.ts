@@ -33,12 +33,7 @@ export class ElasticsearchLoggerService {
                                     type:'date'
                                 },
                                 hostname: {
-                                    type: 'text',
-                                    fields: {
-                                        keyword: {
-                                            type: 'keyword'
-                                        }
-                                    }
+                                    type: 'text'
                                 }
                             }
                         }
