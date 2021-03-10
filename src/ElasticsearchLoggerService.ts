@@ -3,6 +3,7 @@ import { Inject } from '@nestjs/common';
 import { ElasticsearchLoggerOptions } from './ElasticsearchLoggerOptions';
 import * as os from 'os';
 import { ElasticsearchLoggerUtilities } from './ElasticsearchLoggerUtilities';
+import { Search } from '@elastic/elasticsearch/api/requestParams';
 
 export class ElasticsearchLoggerService {
 
@@ -189,6 +190,12 @@ export class ElasticsearchLoggerService {
 
         });
 
+    }
+
+    public async search(obj: Search) {
+
+        return this.client.search(obj);
+        
     }
 
 }
