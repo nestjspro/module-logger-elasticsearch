@@ -26,7 +26,7 @@ export class ElasticsearchLoggerService {
 
                 index,
                 body: {
-                    mappgins: {
+                    mappings: {
                        log: {
                             properties: {
                                 date: {
