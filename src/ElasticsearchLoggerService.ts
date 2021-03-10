@@ -15,13 +15,7 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public async createIndexIfNotExists(index?: string, body?: any) {
-
-        if (!!index) {
-
-            index = ElasticsearchLoggerUtilities.getRollingIndex(this.options.indexPrefix, this.options.rollingOffsetMode);
-
-        }
+    public async createIndexIfNotExists(index: string, body?: any) {
 
         const result = await this.client.indices.exists({ index });
 
@@ -67,11 +61,17 @@ export class ElasticsearchLoggerService {
      */
     public async log<T>(level: string, message: T, indice?: string): Promise<string> {
 
+        if (!!indice) {
+
+            indice = ElasticsearchLoggerUtilities.getRollingIndex(this.options.indexPrefix, this.options.rollingOffsetMode);
+
+        }
+
         await this.createIndexIfNotExists(indice);
 
         const result = await this.client.index({
 
-            index: indice ? indice : ElasticsearchLoggerUtilities.getRollingIndex(this.options.indexPrefix, this.options.rollingOffsetMode),
+            index: indice,
             body: {
 
                 date: new Date(),
@@ -93,11 +93,19 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public raw<T>(message: T, indice?: string): void {
+    public async raw<T>(message: T, indice?: string): Promise<string> {
 
-        this.client.index({
+        if (!!indice) {
 
-            index: indice ? indice : ElasticsearchLoggerUtilities.getRollingIndex(this.options.indexPrefix, this.options.rollingOffsetMode),
+            indice = ElasticsearchLoggerUtilities.getRollingIndex(this.options.indexPrefix, this.options.rollingOffsetMode);
+
+        }
+
+        await this.createIndexIfNotExists(indice);
+
+        const result = await this.client.index({
+
+            index: indice,
             body: message
 
         });
@@ -107,6 +115,8 @@ export class ElasticsearchLoggerService {
             console.log(`[${ this.options.name }] ${ JSON.stringify(message) }`);
 
         }
+
+        return result.body._id;
 
     }
 
