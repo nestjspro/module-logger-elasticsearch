@@ -14,7 +14,7 @@ export class ElasticsearchLoggerService {
 
     }
 
-    private async createIndex(index: string, body?: any) {
+    public async createIndexIfNotExists(index: string, body?: any) {
 
         console.log(index);
         const result = await this.client.indices.exists({ index });
