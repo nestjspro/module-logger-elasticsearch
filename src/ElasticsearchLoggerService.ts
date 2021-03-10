@@ -41,11 +41,11 @@ export class ElasticsearchLoggerService {
      * @param message
      * @param indice
      */
-    public async log(level: string, message: any, indice?: string) {
+    public async log<T>(level: string, message: T, indice?: string): Promise<void> {
 
         await this.createIndexIfNotExists(indice);
 
-        this.client.index({
+       const result = await this.client.index({
 
             index: indice? indice:this.options.index,
             body: {
@@ -58,6 +58,8 @@ export class ElasticsearchLoggerService {
             }
 
         });
+
+        console.log(result);
 
         if (this.options.stdout) {
 
@@ -84,37 +86,37 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public info(message: any, indice?: string): void {
+    public async info<T>(message: any, indice?: string): void {
 
         this.log('info', message, indice);
 
     }
 
-    public error(message: any, indice?: string): void {
+    public async error<T>(message: any, indice?: string): void {
 
         this.log('error', message, indice);
 
     }
 
-    public debug(message: any, indice?: string): void {
+    public async debug<T>(message: any, indice?: string): void {
 
         this.log('debug', message, indice);
 
     }
 
-    public warning(message: any, indice?: string): void {
+    public async warning<T>(message: any, indice?: string): void {
 
         this.log('warning', message, indice);
 
     }
 
-    public trace(message: any, indice?: string): void {
+    public async trace<T>(message: any, indice?: string): void {
 
         this.log('trace', message, indice);
 
     }
 
-    public search(obj: Search) {
+    public async search(obj: Search) {
 
        return this.client.search(obj);
 
