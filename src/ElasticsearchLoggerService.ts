@@ -14,7 +14,7 @@ export class ElasticsearchLoggerService {
 
     }
 
-    private async createIndex(index: string) {
+    private async createIndex(index: string, body?: any) {
 
         console.log(index);
         const result = await this.client.indices.exists({ index });
@@ -25,20 +25,9 @@ export class ElasticsearchLoggerService {
             console.log(await this.client.indices.create({
 
                 index,
-                body: {
-                    mappings: {
-                       log: {
-                            properties: {
-                                date: {
-                                    type:'date'
-                                },
-                                hostname: {
-                                    type: 'text'
-                                }
-                            }
-                        }
-                    }
-                }
+
+                body
+
             }))
 
         }
