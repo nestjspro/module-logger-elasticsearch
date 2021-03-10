@@ -4,6 +4,7 @@ import { ElasticsearchLoggerOptions } from './ElasticsearchLoggerOptions';
 import * as os from 'os';
 import { ElasticsearchLoggerUtilities } from './ElasticsearchLoggerUtilities';
 import { Search } from '@elastic/elasticsearch/api/requestParams';
+import { TransportRequestPromise, RequestBody, Context, ApiResponse } from '@elastic/elasticsearch/lib/Transport';
 
 export class ElasticsearchLoggerService {
 
@@ -192,10 +193,10 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public async search(obj: Search) {
+    public async search<TResponse = Record<string, any>, TRequestBody extends RequestBody = Record<string, any>, TContext = Context>(obj: Search): Promise<TransportRequestPromise<ApiResponse<TResponse, TContext>>> {
 
         return this.client.search(obj);
-        
+
     }
 
 }
