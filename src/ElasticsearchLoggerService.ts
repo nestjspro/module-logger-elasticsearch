@@ -86,31 +86,31 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public async info<T>(message: any, indice?: string): void {
+    public async info<T>(message: any, indice?: string): Promise<void> {
 
         this.log('info', message, indice);
 
     }
 
-    public async error<T>(message: any, indice?: string): void {
+    public async error<T>(message: any, indice?: string): Promise<void> {
 
         this.log('error', message, indice);
 
     }
 
-    public async debug<T>(message: any, indice?: string): void {
+    public async debug<T>(message: any, indice?: string): Promise<void> {
 
         this.log('debug', message, indice);
 
     }
 
-    public async warning<T>(message: any, indice?: string): void {
+    public async warning<T>(message: any, indice?: string): Promise<void> {
 
         this.log('warning', message, indice);
 
     }
 
-    public async trace<T>(message: any, indice?: string): void {
+    public async trace<T>(message: any, indice?: string): Promise<void> {
 
         this.log('trace', message, indice);
 
