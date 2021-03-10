@@ -39,12 +39,12 @@ export class ElasticsearchLoggerService {
      *
      * @param {string} level
      * @param message
+     * @param indice
      */
-    public log(level: string, message: any, indice?: string): void {
+    public async log(level: string, message: any, indice?: string) {
 
-        this.createIndexIfNotExists(indice);
+        await this.createIndexIfNotExists(indice);
 
-        return;
         this.client.index({
 
             index: indice? indice:this.options.index,
