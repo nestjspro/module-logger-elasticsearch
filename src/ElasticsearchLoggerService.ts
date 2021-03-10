@@ -1,8 +1,9 @@
-import { Client }                     from '@elastic/elasticsearch';
-import { Inject }                     from '@nestjs/common';
+import { Client } from '@elastic/elasticsearch';
+import { Inject } from '@nestjs/common';
 import { ElasticsearchLoggerOptions } from './ElasticsearchLoggerOptions';
 import * as os from 'os';
 import { Search } from '@elastic/elasticsearch/api/requestParams';
+import { ElasticsearchLoggerUtilities } from './ElasticsearchLoggerUtilities';
 
 export class ElasticsearchLoggerService {
 
@@ -14,21 +15,27 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public async createIndexIfNotExists(index: string, body?: any) {
+    public async createIndexIfNotExists(index?: string, body?: any) {
 
+        if (!!index) {
+
+            index = ElasticsearchLoggerUtilities.getRollingIndex(this.options.indexPrefix, this.options.rollingOffsetMode);
+
+        }
+
+        console.log(this.options);
         console.log(index);
+
         const result = await this.client.indices.exists({ index });
-        console.log(result);
 
-        if(result.statusCode !== 200) {
+        if (result.statusCode !== 200) {
 
-            console.log(await this.client.indices.create({
+            await this.client.indices.create({
 
                 index,
-
                 body
 
-            }))
+            });
 
         }
 
@@ -41,13 +48,13 @@ export class ElasticsearchLoggerService {
      * @param message
      * @param indice
      */
-    public async log<T>(level: string, message: T, indice?: string): Promise<void> {
+    public async log<T>(level: string, message: T, indice?: string): Promise<string> {
 
         await this.createIndexIfNotExists(indice);
 
-       const result = await this.client.index({
+        const result = await this.client.index({
 
-            index: indice? indice:this.options.index,
+            index: indice ? indice : ElasticsearchLoggerUtilities.getRollingIndex(this.options.indexPrefix, this.options.rollingOffsetMode),
             body: {
 
                 date: new Date(),
@@ -59,21 +66,21 @@ export class ElasticsearchLoggerService {
 
         });
 
-        console.log(result);
-
         if (this.options.stdout) {
 
             console.log(`[${ this.options.name }] ${ JSON.stringify(message) }`);
 
         }
 
+        return result.body._id;
+
     }
 
-    public raw(message: any, indice?: string): void {
+    public raw<T>(message: T, indice?: string): void {
 
         this.client.index({
 
-            index: indice? indice:this.options.index,
+            index: indice ? indice : ElasticsearchLoggerUtilities.getRollingIndex(this.options.indexPrefix, this.options.rollingOffsetMode),
             body: message
 
         });
@@ -86,39 +93,39 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public async info<T>(message: any, indice?: string): Promise<void> {
+    public async info<T>(message: T, indice?: string): Promise<string> {
 
-        this.log('info', message, indice);
-
-    }
-
-    public async error<T>(message: any, indice?: string): Promise<void> {
-
-        this.log('error', message, indice);
+        return this.log('info', message, indice);
 
     }
 
-    public async debug<T>(message: any, indice?: string): Promise<void> {
+    public async error<T>(message: T, indice?: string): Promise<string> {
 
-        this.log('debug', message, indice);
-
-    }
-
-    public async warning<T>(message: any, indice?: string): Promise<void> {
-
-        this.log('warning', message, indice);
+        return this.log('error', message, indice);
 
     }
 
-    public async trace<T>(message: any, indice?: string): Promise<void> {
+    public async debug<T>(message: T, indice?: string): Promise<string> {
 
-        this.log('trace', message, indice);
+        return this.log('debug', message, indice);
+
+    }
+
+    public async warning<T>(message: T, indice?: string): Promise<string> {
+
+        return this.log('warning', message, indice);
+
+    }
+
+    public async trace<T>(message: T, indice?: string): Promise<string> {
+
+        return this.log('trace', message, indice);
 
     }
 
     public async search(obj: Search) {
 
-       return this.client.search(obj);
+        return this.client.search(obj);
 
     }
 
