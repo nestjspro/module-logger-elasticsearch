@@ -61,7 +61,7 @@ export class ElasticsearchLoggerService {
      */
     public async log<T>(level: string, message: T, indice?: string): Promise<string> {
 
-        if (!!indice) {
+        if (!!!indice) {
 
             indice = ElasticsearchLoggerUtilities.getRollingIndex(this.options.indexPrefix, this.options.rollingOffsetMode);
 
@@ -95,7 +95,7 @@ export class ElasticsearchLoggerService {
 
     public async raw<T>(message: T, indice?: string): Promise<string> {
 
-        if (!!indice) {
+        if (!!!indice) {
 
             indice = ElasticsearchLoggerUtilities.getRollingIndex(this.options.indexPrefix, this.options.rollingOffsetMode);
 
