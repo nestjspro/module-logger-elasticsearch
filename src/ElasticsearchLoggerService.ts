@@ -2,6 +2,7 @@ import { Client }                     from '@elastic/elasticsearch';
 import { Inject }                     from '@nestjs/common';
 import { ElasticsearchLoggerOptions } from './ElasticsearchLoggerOptions';
 import * as os from 'os';
+import { Search } from '@elastic/elasticsearch/api/requestParams';
 
 export class ElasticsearchLoggerService {
 
@@ -90,14 +91,9 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public search() {
+    public search(obj: Search) {
 
-        this.client.search({
-
-            index: 'mlfabric-logs-*',
-            body: {}
-
-        });
+       return this.client.search(obj);
 
     }
 
