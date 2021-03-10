@@ -23,9 +23,6 @@ export class ElasticsearchLoggerService {
 
         }
 
-        console.log(this.options);
-        console.log(index);
-
         const result = await this.client.indices.exists({ index });
 
         if (result.statusCode !== 200) {
@@ -33,7 +30,27 @@ export class ElasticsearchLoggerService {
             await this.client.indices.create({
 
                 index,
-                body
+                body: body || {
+
+                    mappings: {
+
+                        properties: {
+
+                            date: {
+
+                                type: 'date'
+
+                            },
+
+                            hostname: { type: 'text' },
+                            level: { type: 'keyword' },
+                            body: { type: 'nested' }
+
+                        }
+
+                    }
+
+                }
 
             });
 
