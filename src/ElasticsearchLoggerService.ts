@@ -2,12 +2,12 @@ import { Client } from '@elastic/elasticsearch';
 import { Inject } from '@nestjs/common';
 import { ElasticsearchLoggerOptions } from './ElasticsearchLoggerOptions';
 import * as os from 'os';
-import { Search } from '@elastic/elasticsearch/api/requestParams';
 import { ElasticsearchLoggerUtilities } from './ElasticsearchLoggerUtilities';
 
 export class ElasticsearchLoggerService {
 
     private readonly client: Client;
+    private indexes_cache: Array<string> = [];
 
     public constructor(@Inject('CONFIG_OPTIONS') private readonly options: ElasticsearchLoggerOptions) {
 
@@ -16,6 +16,12 @@ export class ElasticsearchLoggerService {
     }
 
     public async createIndexIfNotExists(index: string, body?: any) {
+
+        if (this.indexes_cache.indexOf(index) > -1) {
+
+            return;
+
+        }
 
         const result = await this.client.indices.exists({ index });
 
@@ -49,6 +55,8 @@ export class ElasticsearchLoggerService {
             });
 
         }
+
+        this.indexes_cache.push(index);
 
     }
 
@@ -150,9 +158,36 @@ export class ElasticsearchLoggerService {
 
     }
 
-    public async search(obj: Search) {
+    public async getLatest(index?: string) {
 
-        return this.client.search(obj);
+        if (!!!index) {
+
+            index = `${ this.options.indexPrefix }*`;
+
+        }
+
+        return this.client.search({
+
+            index,
+            body: {
+
+                sort: [
+
+                    {
+
+                        "date": {
+
+                            "order": "desc"
+
+                        }
+
+                    }
+
+                ]
+
+            }
+
+        });
 
     }
 
